@@ -1,0 +1,141 @@
+code link # 📚 Library Management System
+
+## 📌 Project Description
+
+The Library Management System is a simple web-based application used to manage library books efficiently. It allows users to add, view, search, update, and delete book records.
+
+This project is developed using a single HTML file containing HTML, CSS, and JavaScript.
+
+## 🎯 Objectives
+
+* To manage library book records easily.
+* To add new books to the library.
+* To view all available book details.
+* To search for books quickly.
+* To update existing book information.
+* To delete unwanted book records.
+* To display available and issued books.
+
+## 🛠️ Technologies Used
+
+* HTML
+* CSS
+* JavaScript
+* Local Storage
+
+## ✨ Features
+
+### 1. Add Book
+
+Users can add a new book by entering:
+
+* Book Name
+* Author Name
+* Book ID
+* Category
+* Book Status
+
+### 2. View Books
+
+All book details are displayed in a table.
+
+### 3. Search Book
+
+Users can search books using the book name, author name, or book ID.
+
+### 4. Update Book
+
+Existing book information can be edited and updated.
+
+### 5. Delete Book
+
+Users can delete a book record when it is no longer required.
+
+### 6. Dashboard
+
+The dashboard displays:
+
+* Total Books
+* Available Books
+* Issued Books
+
+### 7. Local Storage
+
+Book data is stored in the browser using JavaScript Local Storage.
+
+## 📂 Project Structure
+
+```text
+Library-Management-System/
+│
+└── index.html
+```
+
+All HTML, CSS, and JavaScript code is included in a single `index.html` file.
+
+## 🚀 How to Run the Project
+
+1. Download or clone the project.
+2. Open the project folder in VS Code.
+3. Open the `index.html` file.
+4. Run it using a browser or Live Server.
+5. Start adding and managing books.
+
+## 💻 CRUD Operations
+
+This project supports the following CRUD operations:
+
+* **Create** – Add a new book.
+* **Read** – View book records.
+* **Update** – Edit book details.
+* **Delete** – Remove book records.
+
+## 📊 Application Workflow
+
+```text
+Start
+  ↓
+Open Library Management System
+  ↓
+Enter Book Details
+  ↓
+Add Book
+  ↓
+View Book Records
+  ↓
+Search / Edit / Delete
+  ↓
+Store Data in Local Storage
+  ↓
+End
+```
+
+## ✅ Advantages
+
+* Simple and easy to use.
+* No database installation required.
+* Single-file project.
+* Fast book searching.
+* Easy CRUD operations.
+* Data is saved using Local Storage.
+* Beginner-friendly project.
+
+## 🔮 Future Enhancements
+
+* Student/member management.
+* Book issue and return system.
+* Due date management.
+* Fine calculation.
+* Login and authentication.
+* Database integration.
+* Admin dashboard.
+* Cloud data storage.
+
+## 👩‍💻 Project Type
+
+**CRUD-Based Web Application**
+
+## 📄 License
+
+This project is created for educational and academic purposes.
+  https://nivedhana906-cv.github.io/Library-management-system/
