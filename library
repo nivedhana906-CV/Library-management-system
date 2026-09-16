@@ -1,110 +1,428 @@
-```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Library Management System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Management System</title>
 
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f2f2f2;
-            text-align: center;
-        }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
 
-        .box {
-            width: 80%;
-            margin: 30px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-        }
+body{
+    background:#f4f6f8;
+    color:#222;
+}
 
-        input {
-            padding: 10px;
-            margin: 5px;
-        }
+header{
+    background:#2c3e50;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
 
-        button {
-            padding: 10px 15px;
-            margin: 5px;
-            cursor: pointer;
-        }
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:25px auto;
+}
 
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:25px;
+}
 
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-        }
+.card{
+    background:white;
+    padding:20px;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 2px 8px #ccc;
+}
 
-        th {
-            background-color: #333;
-            color: white;
-        }
-    </style>
+.card h2{
+    color:#2980b9;
+    margin-top:10px;
+}
+
+.form-box{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 8px #ccc;
+    margin-bottom:25px;
+}
+
+.form-box h2{
+    margin-bottom:20px;
+    color:#2c3e50;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    margin:5px;
+}
+
+.add-btn{
+    background:#27ae60;
+    color:white;
+}
+
+.edit-btn{
+    background:#f39c12;
+    color:white;
+}
+
+.delete-btn{
+    background:#e74c3c;
+    color:white;
+}
+
+.search{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px #ccc;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 2px 8px #ccc;
+}
+
+th, td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:center;
+}
+
+th{
+    background:#34495e;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#f2f2f2;
+}
+
+@media(max-width:700px){
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+    th,td{
+        padding:7px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<div class="box">
+<header>
+    <h1>📚 Library Management System</h1>
+    <p>Simple CRUD Based Library Application</p>
+</header>
 
-    <h1>Library Management System</h1>
+<div class="container">
 
-    <input type="text" id="book" placeholder="Book Name">
-    <input type="text" id="author" placeholder="Author Name">
+    <!-- Dashboard -->
+    <div class="dashboard">
 
-    <button onclick="addBook()">Add Book</button>
+        <div class="card">
+            <p>Total Books</p>
+            <h2 id="totalBooks">0</h2>
+        </div>
 
+        <div class="card">
+            <p>Available Books</p>
+            <h2 id="availableBooks">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Issued Books</p>
+            <h2 id="issuedBooks">0</h2>
+        </div>
+
+    </div>
+
+    <!-- Add Book Form -->
+    <div class="form-box">
+
+        <h2>📖 Add / Update Book</h2>
+
+        <input type="text" id="bookName" placeholder="Book Name">
+
+        <input type="text" id="author" placeholder="Author Name">
+
+        <input type="text" id="bookId" placeholder="Book ID">
+
+        <input type="text" id="category" placeholder="Category">
+
+        <select id="status">
+            <option value="Available">Available</option>
+            <option value="Issued">Issued</option>
+        </select>
+
+        <button class="add-btn" onclick="saveBook()">
+            Add Book
+        </button>
+
+        <button onclick="clearForm()">
+            Clear
+        </button>
+
+    </div>
+
+    <!-- Search -->
+    <div class="search">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="🔍 Search book by name, author or ID..."
+            onkeyup="displayBooks()"
+        >
+
+    </div>
+
+    <!-- Book Table -->
     <table>
-        <tr>
-            <th>Book Name</th>
-            <th>Author</th>
-            <th>Action</th>
-        </tr>
 
-        <tbody id="list"></tbody>
+        <thead>
+
+            <tr>
+                <th>S.No</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Book ID</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="bookTable">
+        </tbody>
+
     </table>
 
 </div>
 
 <script>
 
-function addBook() {
+let books = JSON.parse(localStorage.getItem("libraryBooks")) || [];
 
-    let book = document.getElementById("book").value;
+let editIndex = -1;
+
+
+/* Save Book */
+
+function saveBook(){
+
+    let bookName = document.getElementById("bookName").value;
     let author = document.getElementById("author").value;
+    let bookId = document.getElementById("bookId").value;
+    let category = document.getElementById("category").value;
+    let status = document.getElementById("status").value;
 
-    if (book == "" || author == "") {
-        alert("Please enter all details");
+    if(bookName === "" || author === "" || bookId === "" || category === ""){
+        alert("Please fill all fields!");
         return;
     }
 
-    let table = document.getElementById("list");
+    let book = {
+        bookName: bookName,
+        author: author,
+        bookId: bookId,
+        category: category,
+        status: status
+    };
 
-    let row = table.insertRow();
+    if(editIndex === -1){
 
-    row.insertCell(0).innerHTML = book;
-    row.insertCell(1).innerHTML = author;
+        books.push(book);
 
-    row.insertCell(2).innerHTML =
-        '<button onclick="deleteBook(this)">Delete</button>';
+        alert("Book added successfully!");
 
-    document.getElementById("book").value = "";
+    }else{
+
+        books[editIndex] = book;
+
+        alert("Book updated successfully!");
+
+        editIndex = -1;
+    }
+
+    localStorage.setItem("libraryBooks", JSON.stringify(books));
+
+    clearForm();
+
+    displayBooks();
+}
+
+
+/* Display Books */
+
+function displayBooks(){
+
+    let table = document.getElementById("bookTable");
+
+    let search = document.getElementById("search").value.toLowerCase();
+
+    table.innerHTML = "";
+
+    books.forEach((book,index)=>{
+
+        let data =
+            book.bookName.toLowerCase() +
+            book.author.toLowerCase() +
+            book.bookId.toLowerCase();
+
+        if(data.includes(search)){
+
+            let row = `
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>${book.bookName}</td>
+
+                <td>${book.author}</td>
+
+                <td>${book.bookId}</td>
+
+                <td>${book.category}</td>
+
+                <td>${book.status}</td>
+
+                <td>
+
+                    <button
+                        class="edit-btn"
+                        onclick="editBook(${index})">
+                        Edit
+                    </button>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteBook(${index})">
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+            `;
+
+            table.innerHTML += row;
+        }
+
+    });
+
+    updateDashboard();
+}
+
+
+/* Edit Book */
+
+function editBook(index){
+
+    let book = books[index];
+
+    document.getElementById("bookName").value = book.bookName;
+    document.getElementById("author").value = book.author;
+    document.getElementById("bookId").value = book.bookId;
+    document.getElementById("category").value = book.category;
+    document.getElementById("status").value = book.status;
+
+    editIndex = index;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* Delete Book */
+
+function deleteBook(index){
+
+    if(confirm("Are you sure you want to delete this book?")){
+
+        books.splice(index,1);
+
+        localStorage.setItem(
+            "libraryBooks",
+            JSON.stringify(books)
+        );
+
+        displayBooks();
+
+    }
+}
+
+
+/* Clear Form */
+
+function clearForm(){
+
+    document.getElementById("bookName").value = "";
     document.getElementById("author").value = "";
+    document.getElementById("bookId").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("status").value = "Available";
+
+    editIndex = -1;
 }
 
-function deleteBook(button) {
 
-    button.parentElement.parentElement.remove();
+/* Dashboard */
 
+function updateDashboard(){
+
+    document.getElementById("totalBooks").innerText =
+        books.length;
+
+    document.getElementById("availableBooks").innerText =
+        books.filter(book => book.status === "Available").length;
+
+    document.getElementById("issuedBooks").innerText =
+        books.filter(book => book.status === "Issued").length;
 }
+
+
+/* Initial Display */
+
+displayBooks();
 
 </script>
 
 </body>
 </html>
-```
