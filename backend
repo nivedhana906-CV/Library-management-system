@@ -1,0 +1,165 @@
+```python
+from flask import Flask, request, jsonify
+import sqlite3
+
+app = Flask(__name__)
+
+# ==============================
+# DATABASE
+# ==============================
+
+def connect_db():
+    return sqlite3.connect("library.db")
+
+
+def create_table():
+
+    conn = connect_db()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS books (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            book_name TEXT NOT NULL,
+            author TEXT NOT NULL,
+            book_id TEXT NOT NULL,
+            category TEXT NOT NULL,
+            status TEXT NOT NULL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# ==============================
+# ADD BOOK
+# ==============================
+
+@app.route("/books", methods=["POST"])
+def add_book():
+
+    data = request.json
+
+    conn = connect_db()
+
+    conn.execute("""
+        INSERT INTO books
+        (book_name, author, book_id, category, status)
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        data["book_name"],
+        data["author"],
+        data["book_id"],
+        data["category"],
+        data["status"]
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "message": "Book added successfully"
+    })
+
+
+# ==============================
+# VIEW BOOKS
+# ==============================
+
+@app.route("/books", methods=["GET"])
+def view_books():
+
+    conn = connect_db()
+
+    cursor = conn.execute(
+        "SELECT * FROM books"
+    )
+
+    books = cursor.fetchall()
+
+    conn.close()
+
+    result = []
+
+    for book in books:
+
+        result.append({
+            "id": book[0],
+            "book_name": book[1],
+            "author": book[2],
+            "book_id": book[3],
+            "category": book[4],
+            "status": book[5]
+        })
+
+    return jsonify(result)
+
+
+# ==============================
+# UPDATE BOOK
+# ==============================
+
+@app.route("/books/<int:id>", methods=["PUT"])
+def update_book(id):
+
+    data = request.json
+
+    conn = connect_db()
+
+    conn.execute("""
+        UPDATE books
+        SET book_name = ?,
+            author = ?,
+            book_id = ?,
+            category = ?,
+            status = ?
+        WHERE id = ?
+    """, (
+        data["book_name"],
+        data["author"],
+        data["book_id"],
+        data["category"],
+        data["status"],
+        id
+    ))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "message": "Book updated successfully"
+    })
+
+
+# ==============================
+# DELETE BOOK
+# ==============================
+
+@app.route("/books/<int:id>", methods=["DELETE"])
+def delete_book(id):
+
+    conn = connect_db()
+
+    conn.execute(
+        "DELETE FROM books WHERE id = ?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "message": "Book deleted successfully"
+    })
+
+
+# ==============================
+# RUN SERVER
+# ==============================
+
+if __name__ == "__main__":
+
+    create_table()
+
+    app.run(debug=True)
+```
