@@ -1,0 +1,110 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Library Management System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .box {
+            width: 80%;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Library Management System</h1>
+
+    <input type="text" id="book" placeholder="Book Name">
+    <input type="text" id="author" placeholder="Author Name">
+
+    <button onclick="addBook()">Add Book</button>
+
+    <table>
+        <tr>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Action</th>
+        </tr>
+
+        <tbody id="list"></tbody>
+    </table>
+
+</div>
+
+<script>
+
+function addBook() {
+
+    let book = document.getElementById("book").value;
+    let author = document.getElementById("author").value;
+
+    if (book == "" || author == "") {
+        alert("Please enter all details");
+        return;
+    }
+
+    let table = document.getElementById("list");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = book;
+    row.insertCell(1).innerHTML = author;
+
+    row.insertCell(2).innerHTML =
+        '<button onclick="deleteBook(this)">Delete</button>';
+
+    document.getElementById("book").value = "";
+    document.getElementById("author").value = "";
+}
+
+function deleteBook(button) {
+
+    button.parentElement.parentElement.remove();
+
+}
+
+</script>
+
+</body>
+</html>
+```
